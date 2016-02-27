@@ -6,13 +6,15 @@ from entities.user import User
 from repositories.persistence import UserTable
 from .session import session_manager as sm
 
-
-def create_user(email, password, uuid=None):
+# By default, we'll make the users enabled as it 
+# is the most usual thing
+def create_user(email, password, uuid=None, enabled=True):
     uuid = uuid if uuid else uuid_generator.uuid4().hex
     user_row = UserTable(
             uuid=uuid,
             email=email,
-            password=hashpw(password, gensalt()))
+            password=hashpw(password, gensalt()),
+            enabled=enabled)
     sm.session.add(user_row)
     sm.session.commit()
     return _user_row_to_user(user_row)
@@ -41,7 +43,9 @@ def _user_row_to_user(user_row):
         return User(
                 uuid=user_row.uuid,
                 email=user_row.email,
-                password=user_row.password)
+                password=user_row.password,
+                # I almost forgot to add this one...
+                enabled=user_row.enabled)
     return None
 
 

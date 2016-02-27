@@ -10,6 +10,8 @@ class UserTable(Base):
     uuid = Column(Text, index=True, unique=True)
     email = Column(Text, index=True)
     password = Column(Text)
+# We add the missing column, so it will be persisted
+    enabled = Column(Boolean)
 
     def __repr__(self):
         return "repositories.UserTable: {}".format(self.email)

@@ -5,6 +5,8 @@ class User(Entity):
         self.email = kwargs['email']
         self.password = kwargs['password']
         self.uuid = kwargs['uuid']
+        # This is missing, so we cannot log in
+        self.enabled = kwargs['enabled']
 
     def __repr__(self):
         return "entities.User: {}".format(self.email)
