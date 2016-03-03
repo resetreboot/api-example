@@ -11,7 +11,7 @@ class ComputerTable(Base):
     bits = Column(Integer)
     ram = Column(Integer)                            # In Kilobytes, we go vintage
     rom = Column(Integer, nullable=True)
-    programs = relationship("Program", backref="made_for",
+    programs = relationship("ProgramTable", back_populates="made_for",
                             cascade="all, delete, delete-orphan")  # A computer can have many programs
 
     def __repr__(self):

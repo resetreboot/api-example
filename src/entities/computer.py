@@ -4,7 +4,6 @@ class Computer(Entity):
     def __init__(self, *args, **kwargs):
         self.model = kwargs['model']
         self.bits = kwargs['bits']
-        self.id = kwargs['id']
         self.ram = kwargs['ram']
         self.rom = kwargs['rom']
 
@@ -12,4 +11,4 @@ class Computer(Entity):
         return "entities.Computer: {}".format(self.model)
 
     def toJSONDict(self):
-        return super(Computer, self).toJSONDict(["id", "model", "bits", "ram", "rom"])
+        return super(Computer, self).toJSONDict(["model", "bits", "ram", "rom"])
