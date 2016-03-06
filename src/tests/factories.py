@@ -6,6 +6,9 @@ from faker import Faker
 from entities.user import User as UserE
 from repositories import user
 
+from entities.computer import Computer as ComputerT
+from repositories import computer
+
 fake = Faker()
 
 
@@ -29,3 +32,18 @@ def create_user(**kwargs):
             password='abc12345',
             enabled=True)
     return userE
+
+
+############
+# Computer #
+############
+
+def create_computer(**kwargs):
+    computerT = computer.create_computer(
+                    model="Spectrum",
+                    bits=8,
+                    ram=48,
+                    rom=48,
+                    programs=[])
+    
+    return computerT
