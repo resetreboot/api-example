@@ -1,14 +1,14 @@
 from anillo.http import Ok, BadRequest
 
 from controllers.controller import Controller
-from services.computer import list, create, update, get_computer, delete
+from services.program import list, create, update, get_program, delete
 from utils.authorization import login_required
 from validators.validator import with_validators
-from validators.computer import ComputerCreateValidator
+from validators.program import ProgramCreateValidator
 
 from urllib.parse import parse_qs
 
-class ComputerList(Controller):
+class ProgramList(Controller):
     @login_required
     def get(self, request):
         success, result, errors = list()
@@ -16,19 +16,19 @@ class ComputerList(Controller):
         if errors:
             return BadRequest(errors)
 
-        return Ok({'computers': [u.toJSONDict() for u in result['computers']]})
+        return Ok({'programs': [u.toJSONDict() for u in result['programs']]})
 
 
-class ComputerMethods(Controller):
+class ProgramMethods(Controller):
     @login_required
     def get(self, request):
         query = parse_qs(request["query_string"])
-        models = query.get(b'model')
+        names = query.get(b'name')
 
-        if models is not None:
-            if len(models) > 0: 
-                model = models[0].decode()
-                success, result, errors = get_computer(model)
+        if names is not None:
+            if len(names) > 0: 
+                name = names[0].decode()
+                success, result, errors = get_program(name)
 
             else:
                 return BadRequest()
@@ -39,16 +39,15 @@ class ComputerMethods(Controller):
         if errors:
             return BadRequest(errors)
 
-        return Ok({'computer': result['computer'].toJSONDict()})
+        return Ok({'program': result['program'].toJSONDict()})
 
     @login_required
-    @with_validators([ComputerCreateValidator])
+    @with_validators([ProgramCreateValidator])
     def put(self, request, data):
         success, result, errors = update(
-            data["computer_data"].model,
-            data["computer_data"].bits,
-            data["computer_data"].ram,
-            data["computer_data"].rom
+            data["program_data"].name,
+            data["program_data"].version,
+            data["program_data"].computer_model
         )
 
         if errors:
@@ -59,12 +58,12 @@ class ComputerMethods(Controller):
     @login_required
     def delete(self, request):
         query = parse_qs(request["query_string"])
-        models = query.get(b'model')
+        names = query.get(b'name')
 
-        if models is not None:
-            if len(models) > 0: 
-                model = models[0].decode()
-                success, result, errors = delete(model)
+        if names is not None:
+            if len(names) > 0: 
+                name = names[0].decode()
+                success, result, errors = delete(name)
 
             else:
                 return BadRequest()
@@ -78,11 +77,10 @@ class ComputerMethods(Controller):
         return Ok()
 
     @login_required
-    @with_validators([ComputerCreateValidator])
+    @with_validators([ProgramCreateValidator])
     def post(self, request, data):
         success, result, errors = create(
-            data["computer_data"].model,
-            data["computer_data"].bits,
-            data["computer_data"].ram,
-            data["computer_data"].rom
+            data["program_data"].name,
+            data["program_data"].version,
+            data["program_data"].computer_model,
         )

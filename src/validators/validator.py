@@ -19,6 +19,7 @@ def with_validators(validator_list):
     def func_wrapper(func):
         @wraps(func)
         def returned_wrapper(instance, request, **kwargs):
+            print (kwargs)
             data, errors = {}, {}
             body = 'body' in request and request.body or {}
             # To get the url params

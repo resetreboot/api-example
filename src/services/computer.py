@@ -10,8 +10,8 @@ def list():
     return True, {'computers': computers}, None
 
 
-def get_computer(id):
-    computer = get_computer_by_id(id)
+def get_computer(model):
+    computer = get_computer_by_model(model)
     return True, {'computer': computer}, None
 
 
@@ -35,9 +35,9 @@ def search_by_bits(bits):
     return True, {'computers': computers}, None
 
 
-def update(id, model=None, bits=None, ram=None, rom=None):
+def update(model, bits=None, ram=None, rom=None):
     errors = dict()
-    if modify_computer(id, model, bits, ram, rom):
+    if modify_computer(model, bits, ram, rom):
         return True, {}, None
 
     else:
@@ -61,9 +61,9 @@ def create(model, bits, ram, rom=None):
     return True, {"computer": computer}, None
 
 
-def delete(id):
+def delete(model):
     errors = {}
-    if remove_computer(id):
+    if remove_computer(model):
         return True, {}, None
 
     else:

@@ -6,9 +6,10 @@ class Computer(Entity):
         self.bits = kwargs['bits']
         self.ram = kwargs['ram']
         self.rom = kwargs['rom']
+        self.programs = kwargs['programs']
 
     def __repr__(self):
         return "entities.Computer: {}".format(self.model)
 
     def toJSONDict(self):
-        return super(Computer, self).toJSONDict(["model", "bits", "ram", "rom"])
+        return super(Computer, self).toJSONDict(["model", "bits", "ram", "rom", "programs"])

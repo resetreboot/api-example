@@ -1,5 +1,6 @@
 from entities.computer import Computer
 from repositories.persistence import ComputerTable
+from repositories.program import get_programs_by_computer_model
 from .session import session_manager as sm
 
 def add_computer(model, bits, ram, rom=None):
@@ -14,8 +15,8 @@ def add_computer(model, bits, ram, rom=None):
     return _computer_row_to_computer(computer)
 
 
-def remove_computer(id):
-    computer = _get_computer_row_by_filter({"id": id})
+def remove_computer(model):
+    computer = _get_computer_row_by_filter({"model": model})
     if computer:
         sm.session.delete(computer)
         return True
@@ -24,8 +25,8 @@ def remove_computer(id):
         return False
 
 
-def modify_computer(id, model=None, bits=None, ram=None, rom=None):
-    computer = _get_computer_row_by_filter({"id": id})
+def modify_computer(model, bits=None, ram=None, rom=None):
+    computer = _get_computer_row_by_filter({"model": model})
     
     if computer:
         if model:
@@ -87,11 +88,13 @@ def get_computer_by_id(id):
 
 def _computer_row_to_computer(computer_row):
     if computer_row:
+        programs = get_programs_by_computer_model(computer_row.model)
         return Computer(
             model=computer_row.model,
             bits=computer_row.bits,
             ram=computer_row.ram,
-            rom=computer_row.rom
+            rom=computer_row.rom,
+            programs=programs
         )
     return None
 
